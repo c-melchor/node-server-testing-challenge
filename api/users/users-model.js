@@ -9,7 +9,7 @@ module.exports = {
             .where("id", id)
             .first()
     },
-    async insert(user) {
+    insert(user) {
         return db("users").insert(user)
             .then(id => {
                 return db("users")

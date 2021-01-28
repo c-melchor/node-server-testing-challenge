@@ -3,30 +3,28 @@ const server = express();
 const Users = require("./users/users-model")
 
 server.use(express.json());
-// server.use("/api/users", userRouter);
 
-
-server.get("/", (req, res) => {
+server.get("/api/users", (req, res) => {
     Users.getAll()
         .then(users => {
             res.status(200).json(users)
         })
-        .catch(() => {
-            res.status(500).json("Unable to get users")
+        .catch(err => {
+            res.status(500).json(err)
         })
 });
 
-server.post("/", (req, res) => {
+server.post("/api/users", (req, res) => {
     Users.insert(req.body)
         .then(newUser => {
             res.status(201).json(newUser)
         })
         .catch(err => {
-            res.status(500).json({ message: err })
+            res.status(500).json({ message: err.message })
         })
 });
 
-server.delete("/:id", (req, res) => {
+server.delete("/api/users/:id", (req, res) => {
     const { id } = req.params;
     Users.remove(id)
         .then(deletedUser => {
