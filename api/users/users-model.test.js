@@ -33,4 +33,14 @@ describe("Users model", () => {
             expect(all).toHaveLength(1)
         });
     });
+
+    describe("delete function", () => {
+        it("deletes user based on id", async () => {
+            let all;
+            const [id] = await db('users').insert(user1)
+            await User.remove(id);
+            all = await db("users")
+            expect(all).toHaveLength(0)
+        });
+    });
 });
