@@ -6,6 +6,11 @@ module.exports = {
       filename: './data/users.db3',
     },
     useNullAsDefault: true,
+    pool: {
+      afterCreate: (conn, done) => {
+        conn.run('PRAGMA foreign_keys = ON', done); // turn on FK enforcement
+      },
+    },
     migrations: {
       directory: './data/migrations',
     },
