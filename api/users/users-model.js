@@ -29,10 +29,6 @@ module.exports = {
     },
     async remove(id) {
         return db("users").where("id", id).del()
-            .then(id => {
-                return db("users")
-                    .where("id", id)
-                    .first()
-            })
+
     }
 }

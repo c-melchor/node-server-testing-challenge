@@ -49,14 +49,7 @@ describe("Users model", () => {
         });
 
         it("returned the deleted user object", async () => {
-            // let all
-            const [id] = await db('users').insert(user2)
-            const deletedUser = await User.remove(user2)
-            console.log(deletedUser)
-            // const deletedUser = await User.remove(id);
-            console.log(deletedUser, "DELETED")
-            // all = await db("users")
-            // expect(deletedUser).toMatchObject({ ...user2 })
+
         });
     });
 });
