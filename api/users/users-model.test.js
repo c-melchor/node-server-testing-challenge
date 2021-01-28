@@ -32,6 +32,11 @@ describe("Users model", () => {
             all = await db("users");
             expect(all).toHaveLength(1)
         });
+
+        it("returns the new user object", async () => {
+            await User.insert(user2);
+            expect(user2).toMatchObject({ ...user2 })
+        });
     });
 
     describe("delete function", () => {
@@ -41,6 +46,17 @@ describe("Users model", () => {
             await User.remove(id);
             all = await db("users")
             expect(all).toHaveLength(0)
+        });
+
+        it("returned the deleted user object", async () => {
+            // let all
+            const [id] = await db('users').insert(user2)
+            const deletedUser = await User.remove(user2)
+            console.log(deletedUser)
+            // const deletedUser = await User.remove(id);
+            console.log(deletedUser, "DELETED")
+            // all = await db("users")
+            // expect(deletedUser).toMatchObject({ ...user2 })
         });
     });
 });
