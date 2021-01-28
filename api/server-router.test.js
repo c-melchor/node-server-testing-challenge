@@ -22,5 +22,17 @@ describe("server", () => {
             const res = await request(server).get("/")
             expect(res.status).toBe(200)
         });
+
+        it("returns the correct amount of users", async () => {
+            let res
+            await db("users").insert(user1);
+            res = await request(server).get("/");
+            expect(res.body).toHaveLength(1)
+
+            await db("users").insert(user2);
+            res = await request(server).get("/");
+            expect(res.body).toHaveLength(2)
+
+        });
     });
 });
