@@ -56,9 +56,15 @@ describe("server", () => {
         it("deletes user based on id", async () => {
             let res;
             const [id] = await db("users").insert(user1)
-            res = await request(server).delete("/api/users/:id").send({ id: id });
-            console.log(res.body)
+            res = await request(server).delete("/api/users/:id").send({ id });
             expect(res.body).toHaveLength(0)
         });
+
+        it("responds with a 200", async () => {
+            let res;
+            const [id] = await db("users").insert(user2);
+            res = await request(server).delete("/api/users/:id").send({ id })
+            expect(res.status).toBe(200)
+        })
     });
 });
