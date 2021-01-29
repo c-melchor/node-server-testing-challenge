@@ -24,15 +24,20 @@ server.post("/api/users", (req, res) => {
         })
 });
 
-server.delete("/api/users/:id", (req, res) => {
+server.delete("/api/users/:id", async (req, res) => {
     const { id } = req.params;
-    Users.remove(id)
-        .then(deletedUser => {
+    const deletedUser = await Users.delete(id)
+
+    try {
+        if (deletedUser) {
             res.status(200).json(deletedUser)
-        })
-        .catch(err => {
-            res.status(500).json("unable to delete user")
-        })
+        } else {
+            res.status(500).json("cant delete")
+        }
+    }
+    catch (error) {
+        res.status(500).json(error)
+    }
 
 });
 

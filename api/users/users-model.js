@@ -27,8 +27,13 @@ module.exports = {
                     .first();
             });
     },
-    async remove(id) {
-        return db("users").where("id", id).del()
-
+    delete(id) {
+        return db("users")
+            .where("id", id)
+            .delete()
+            .then(id => {
+                return db("users").where("id", id)
+                // .first()
+            })
     }
 }

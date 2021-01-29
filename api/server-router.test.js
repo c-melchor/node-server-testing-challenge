@@ -4,6 +4,8 @@ const server = require("./server")
 
 const user1 = { username: "cam", email: "c@email.com" };
 const user2 = { username: "ajm", email: "a@email.com" };
+const user3 = { username: "bpm", email: "a@email.com" };
+
 
 beforeAll(async () => {
     await db.migrate.rollback()
@@ -17,7 +19,7 @@ afterAll(async () => {
 })
 
 describe("server", () => {
-    describe("[GET] users", () => {
+    describe("[GET] method", () => {
         it("responds with 200", async () => {
             const res = await request(server).get("/api/users")
             expect(res.status).toBe(200)
@@ -33,20 +35,30 @@ describe("server", () => {
             res = await request(server).get("/api/users");
             expect(res.body).toHaveLength(2)
         });
+    });
 
-        describe("[POST] method", () => {
-            it("adds a new user to db", async () => {
-                let res
-                res = await request(server).post("/api/users").send(user1)
-                expect(res.body).toMatchObject({ ...user1 })
-            });
+    describe("[POST] method", () => {
+        it("adds a new user to db", async () => {
+            let res
+            res = await request(server).post("/api/users").send(user3)
+            expect(res.body).toMatchObject({ ...user3 })
+        });
 
-            it("responds with new user object", async () => {
-                let res;
-                await db("users").insert(user2)
-                res = await request(server).get("/api/users")
-                expect(res.body[0]).toMatchObject({ id: 1, ...user2 })
-            });
+        it("responds with new user object", async () => {
+            let res;
+            await db("users").insert(user2)
+            res = await request(server).get("/api/users")
+            expect(res.body[0]).toMatchObject({ id: 1, ...user2 })
+        });
+    });
+
+    describe("[DELETE] method", () => {
+        it("deletes user based on id", async () => {
+            let res;
+            const [id] = await db("users").insert(user1)
+            res = await request(server).delete("/api/users/:id").send({ id: id });
+            console.log(res.body)
+            expect(res.body).toHaveLength(0)
         });
     });
 });
